@@ -1,0 +1,31 @@
+## Part 2: 도구를 활용한 챗봇 기능 향상
+챗봇이 기억만으로는 답할 수 없는 질문을 처리하기 위해 웹 검색 도구를 통합할 것입니다. 이 도구를 사용하면, 봇은 관련 정보를 찾아 더 나은 응답들을 제공할 수 있습니다.
+
+**요구사항**
+
+시작하기 전, 필요한 패기지들을 설치하고 API keys를 설정해야 합니다.
+
+먼저, [Tavily Search Engine](https://python.langchain.com/docs/integrations/tools/tavily_search/)를 설치하고, [TAVILY_API_KEY](https://tavily.com/)를 설정하면 됩니다.
+``` 
+pip install -U tavily-python langchain_community
+```
+```python
+_set_env("TAVILY_API_KEY") # TAVILY_API_KEY로 저장
+```
+
+그 다음, tool을 정의합니다.
+``` python
+from langchain_community.tools.tavily_search import TavilySearchResults
+
+tool = TavilySearchResults(max_results=2)
+tools = [tool]
+tool.invoke("What's a 'node' in LangGraph?")
+```
+API Reference: [TavilySearchResults](https://python.langchain.com/api_reference/community/tools/langchain_community.tools.tavily_search.tool.TavilySearchResults.html)
+```
+[{'url': 'https://medium.com/@cplog/introduction-to-langgraph-a-beginners-guide-14f9be027141',
+  'content': 'Nodes: Nodes are the building blocks of your LangGraph. Each node represents a function or a computation step. You define nodes to perform specific tasks, such as processing input, making ...'},
+ {'url': 'https://saksheepatil05.medium.com/demystifying-langgraph-a-beginner-friendly-dive-into-langgraph-concepts-5ffe890ddac0',
+  'content': 'Nodes (Tasks): Nodes are like the workstations on the assembly line. Each node performs a specific task on the product. In LangGraph, nodes are Python functions that take the current state, do some work, and return an updated state. Next, we define the nodes, each representing a task in our sandwich-making process.'}]
+```
+결과들은 챗봇이 질문에 답할 때 활용할 수 있는 페이지의 요약입니다.
